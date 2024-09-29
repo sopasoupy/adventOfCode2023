@@ -1,5 +1,5 @@
 module Main where
-
+import Data.Char (isDigit)
 main :: IO ()
 main = someFunc
 
@@ -34,3 +34,18 @@ stringsToIndexedTubles strings = zip [1..] strings
 isColor :: String -> Bool
 isColor str = str `elem` ["red", "green", "blue"]
 
+readInts :: String -> Int
+readInts = read
+
+
+parseColorCounts :: String -> [(String, Int)]
+parseColorCounts s =
+    let wordsList = words s
+        pairedList = zip (filter isColor wordsList) (map readInts (filter (all isDigit) wordsList))
+    in pairedList
+
+wordsWhen :: (Char -> Bool) -> String -> [String]
+wordsWhen p s =  case dropWhile p s of
+                      "" -> []
+                      s' -> w : wordsWhen p s''
+                            where (w, s'') = break p s'
