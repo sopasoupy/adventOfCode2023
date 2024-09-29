@@ -1,6 +1,4 @@
 module Main where
-import Data.Maybe (listToMaybe)
-import Data.List (findIndex)
 
 main :: IO ()
 main = someFunc
@@ -17,19 +15,22 @@ type CubeCounts = String -> Int
 type GameString = (Int, String)
 type Game = (Int, CubeCounts)
 
-
 validCubeCounts :: CubeCounts
 validCubeCounts "red" = 12
 validCubeCounts "green" = 13
 validCubeCounts "blue" = 14
+validCubeCounts _ = undefined
+
+
+checkCubeCounts :: CubeCounts -> CubeCounts -> Bool
+checkCubeCounts countsSample countsValid = 
+    countsSample "blue" <= countsValid "blue" &&
+    countsSample "red" <= countsValid "red" &&
+    countsSample "green" <= countsValid "green"
 
 stringsToIndexedTubles :: [String] -> [GameString]
 stringsToIndexedTubles strings = zip [1..] strings
 
-numBeforeElemInList :: [String] -> String -> Maybe String
-numBeforeElemInList strings string = 
-    case findIndex (== string) strings of 
-        Just index -> if index > 0
-            then Just (strings !! (index -1))
-            else Nothing
-        Nothing -> Nothing
+isColor :: String -> Bool
+isColor str = str `elem` ["red", "green", "blue"]
+
