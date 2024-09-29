@@ -1,11 +1,17 @@
-module Lib
-    ( someFunc,
-    putIntsInStringIntoList,
-    sumList
-    ) where
+module Main where
 import Data.Char (digitToInt)
+
+main :: IO ()
+main = someFunc
+
 someFunc :: IO ()
-someFunc = putStrLn "someFunc"
+someFunc = do
+    putStrLn "lmao"
+
+readLines :: FilePath -> IO [String]
+readLines filePath = do
+    contents <- readFile filePath
+    return (lines contents)
 
 
 type Alphabet = [Char]
@@ -22,6 +28,3 @@ putIntsInStringIntoList (x : xs) =
 
 sumList :: [Int] -> Int
 sumList xs = sum xs
-
-    
-
