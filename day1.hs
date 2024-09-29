@@ -2,7 +2,11 @@ module Main where
 import Data.Char (digitToInt)
 
 main :: IO ()
-main = someFunc
+main = do
+    let filePath = "puzzles/Day1.txt"
+    input <- readLines filePath
+    let output = sumList (map combineDigits (map putFirstAndLastInt input))
+    putStrLn (show output)
 
 someFunc :: IO ()
 someFunc = do
@@ -19,12 +23,17 @@ type Alphabet = [Char]
 digits :: Alphabet
 digits = ['0' .. '9']
 
-putIntsInStringIntoList :: String -> [Int]
-putIntsInStringIntoList [] = []
-putIntsInStringIntoList (x : xs) = 
-    if x `elem` digits 
-    then (digitToInt x) : putIntsInStringIntoList xs 
-    else putIntsInStringIntoList xs
+
+putFirstAndLastInt :: String -> [Int]
+putFirstAndLastInt xs = case filter (`elem` digits) xs of
+    []  -> []
+    [x] -> [digitToInt x, digitToInt x]
+    ys  -> [digitToInt (head ys), digitToInt (last ys)]
+
+
+combineDigits :: [Int] -> Int 
+combineDigits = foldl (\acc x -> acc * 10 + x) 0
+
 
 sumList :: [Int] -> Int
 sumList xs = sum xs
